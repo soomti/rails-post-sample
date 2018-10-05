@@ -1,0 +1,10 @@
+<p>
+  <%= @post.id %> 번째 게시글</p>
+<p>제목 :
+  <%= @post.title %>
+</p>
+<p>내용 :
+   <%= @post.content %>
+</p>
+<a href="/posts/<%=@post.id%>/destroy">게시글 삭제</a>
+<a href="/posts/<%=@post.id%>/edit"> 게시글 수정</a>
