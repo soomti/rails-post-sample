@@ -1,45 +1,42 @@
 class PostsController < ApplicationController
+    before_action :set_post, only: [:show, :edit, :update, :destroy]
     # view o
     def index
-        # 모든 값을 가져온다.
         @posts = Post.all
     end
-
+    
     def show
-        post_id = params[:id]
-        @post = Post.find(post_id)
     end
-
-    def new
-    end
-
+    
     def edit
-        post_id = params[:id]
-        @post = Post.find(post_id)
+    end   
+    
+    def new
+        @post = Post.new
     end
-
     # view x
     def create
-        @post = Post.new
-        @post.title = params[:title]
-        @post.content = params[:content]
+        @post = Post.new(post_params)
         @post.save 
-        redirect_to "/posts"
+        redirect_to @post
     end
 
-    def update 
-        post_id = params[:id]
-        @post = Post.find(post_id)
-        @post.title = params[:title]
-        @post.content = params[:content]
-        @post.save
-        redirect_to "/posts/#{post_id}"
+    def update         
+        @post.update(post_params)
+        redirect_to @post
     end
 
-    def destroy 
-        post_id = params[:id]
-        @post = Post.find(post_id)
+    def destroy        
         @post.destroy
         redirect_to "/posts"
+    end 
+    
+    private
+    def set_post
+      @post = Post.find(params[:id])
     end  
+
+    def post_params
+        params.require(:post).permit(:title, :content)
+    end
 end
