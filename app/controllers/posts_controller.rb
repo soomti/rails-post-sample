@@ -17,8 +17,15 @@ class PostsController < ApplicationController
     # view x
     def create
         @post = Post.new(post_params)
-        @post.save 
-        redirect_to @post
+        respond_to do |format|
+          if @post.save
+            format.html { redirect_to @post }
+            format.json { render :show, status: :created, location: @post }
+          else
+            format.html { render :new }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
     end
 
     def update         
@@ -28,7 +35,7 @@ class PostsController < ApplicationController
 
     def destroy        
         @post.destroy
-        redirect_to "/posts"
+        redirect_to posts_path
     end 
     
     private
